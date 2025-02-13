@@ -4,6 +4,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/Mathis-zls/CLI-TODO/utils"
@@ -23,7 +24,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if !isValidIndex(string(id)) {
+
+		if !isValidIndex(fmt.Sprintf("%d", id)) {
 			log.Fatal("Not a valid Index")
 		}
 		utils.UpdateTodo(id, utils.TodoParams{
