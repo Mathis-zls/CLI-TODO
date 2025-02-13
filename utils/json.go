@@ -127,3 +127,16 @@ func UpdateTodo(id int, arg TodoParams) error {
 	return nil
 
 }
+
+func MarkTodoAsComplete(id int) error {
+	todos, err := parseJsonToTodo()
+	if err != nil {
+		return err
+	}
+	todos[id-1].Done = true
+	err = parseTodoToJson(todos)
+	if err != nil {
+		return err
+	}
+	return nil
+}

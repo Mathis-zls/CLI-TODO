@@ -1,12 +1,12 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
+	"log"
 
+	"github.com/Mathis-zls/CLI-TODO/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -21,12 +21,19 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("MarkTodoAsComplete called")
+		if !isValidIndex(string(id)) {
+			log.Fatal("Not a valid index")
+		}
+		err := utils.MarkTodoAsComplete(id)
+		if err != nil {
+			log.Fatal("Coudn't be marked as Completed")
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(MarkTodoAsCompleteCmd)
+	MarkTodoAsCompleteCmd.Flags().IntVarP(&id, "id", "i", 0, "the id from the task that shoud be completed")
 
 	// Here you will define your flags and configuration settings.
 
