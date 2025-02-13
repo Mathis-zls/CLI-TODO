@@ -97,3 +97,11 @@ func DeleteTodo(id int) error {
 func SetFilePath(filepath string) {
 	filename = filepath
 }
+
+func GetMaxID() (int, error) {
+	todos, err := parseJsonToTodo()
+	if err != nil {
+		return 0, err
+	}
+	return todos[len(todos)-1].Id, nil
+}

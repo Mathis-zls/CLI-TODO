@@ -1,12 +1,13 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
+	"errors"
+	"strconv"
 
+	"github.com/Mathis-zls/CLI-TODO/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -20,8 +21,18 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := cobra.ExactArgs(1); err != nil {
+			return errors.New("not one Arg")
+		}
+		if isValidIndex(args[0]) {
+			return errors.New("not a Valid ID")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("DeleteTodo called")
+		id, _ := strconv.Atoi(args[0])
+		utils.DeleteTodo(id)
 	},
 }
 
@@ -36,5 +47,18 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// DeleteTodoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// DeleteTodoCmd.Flags().Int("index", 0, "Index that shoud be deleted")
+}
+
+func isValidIndex(index string) bool {
+
+	indx, err := strconv.Atoi(index)
+	if err != nil || indx < 1 {
+		return false
+	}
+	if id, err := utils.GetMaxID(); err != nil || indx > id {
+		return false
+	}
+	return true
+
 }
