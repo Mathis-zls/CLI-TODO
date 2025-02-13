@@ -17,19 +17,19 @@ type Todo struct {
 	Due_time    time.Time
 }
 
-func GetTodos(filename string) ([]Todo, error) {
-	return parseJsonToTodo(filename)
+func GetTodos() ([]Todo, error) {
+	return parseJsonToTodo()
 }
 
-func parseJsonToTodo(file string) ([]Todo, error) {
+func parseJsonToTodo() ([]Todo, error) {
 	tasks := []Todo{}
-	data, err := os.ReadFile(file)
+	data, err := os.ReadFile(filename)
 	if err != nil {
-		return tasks, errors.New("Cant read the json file prob filename wrong")
+		return tasks, errors.New("cant read the json file prob filename wrong")
 	}
 	err = json.Unmarshal(data, &tasks)
 	if err != nil {
-		return []Todo{}, errors.New("Coudn't parse Json file")
+		return []Todo{}, errors.New("coudn't parse Json file")
 	}
 	return tasks, nil
 }
@@ -42,7 +42,10 @@ type TodoParams struct {
 }
 
 func AddTodo(arg TodoParams) error {
-	todos, err := parseJsonToTodo(filename)
+	todos, err := parseJsonToTodo()
+	if err != nil {
+		return err
+	}
 	todo := Todo{
 		Id:          todos[len(todos)-1].Id + 1,
 		Name:        arg.Name,
@@ -50,21 +53,47 @@ func AddTodo(arg TodoParams) error {
 		Due_time:    arg.Due_time,
 	}
 	todos = append(todos, todo)
-	parseTodoToJson(todos)
+	err = parseTodoToJson(todos)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }
 
 func parseTodoToJson(todos []Todo) error {
 	data, err := json.Marshal(todos)
 	if err != nil {
-		return errors.New("Coudn't Marshal json")
+		return errors.New("coudn't Marshal json")
 	}
 	err = os.WriteFile(filename, data, 0644)
 	if err != nil {
-		return errors.New("Coudn't write to the file")
+		return errors.New("coudn't write to the file")
 	}
 	return nil
 }
 
-func DeleteTodo(id int) {
+func DeleteTodo(id int) error {
+	todos, err := parseJsonToTodo()
+	if err != nil {
+		return err
+	}
+	newTodos := []Todo{}
+	for index, todo := range todos {
+		if index+1 != index {
+			if todo.Id > id {
+				todo.Id--
+			}
+			newTodos = append(newTodos, todo)
+		}
+	}
+	err = parseTodoToJson(newTodos)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
+func SetFilePath(filepath string) {
+	filename = filepath
 }
