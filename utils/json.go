@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"time"
 )
 
 var filename = ""
@@ -14,7 +13,7 @@ type Todo struct {
 	Id          int
 	Name        string
 	Description string
-	Due_time    time.Time
+	Due_time    string
 }
 
 func GetTodos() ([]Todo, error) {
@@ -35,10 +34,9 @@ func parseJsonToTodo() ([]Todo, error) {
 }
 
 type TodoParams struct {
-	Done        bool      `json:"done"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Due_time    time.Time `json:"due_too"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Due_time    string `json:"due_too"`
 }
 
 func AddTodo(arg TodoParams) error {
@@ -51,6 +49,7 @@ func AddTodo(arg TodoParams) error {
 		Name:        arg.Name,
 		Description: arg.Description,
 		Due_time:    arg.Due_time,
+		Done:        false,
 	}
 	todos = append(todos, todo)
 	err = parseTodoToJson(todos)
@@ -104,4 +103,27 @@ func GetMaxID() (int, error) {
 		return 0, err
 	}
 	return todos[len(todos)-1].Id, nil
+}
+
+func UpdateTodo(id int, arg TodoParams) error {
+	todos, err := parseJsonToTodo()
+	if err != nil {
+		return err
+	}
+	var todo *Todo = &todos[id-1]
+	if arg.Description != "" {
+		todo.Description = arg.Description
+	}
+	if arg.Name != "" {
+		todo.Name = arg.Name
+	}
+	if arg.Due_time != "" {
+		todo.Due_time = arg.Due_time
+	}
+	err = parseTodoToJson(todos)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

@@ -1,14 +1,16 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
-	"fmt"
+	"log"
 
+	"github.com/Mathis-zls/CLI-TODO/utils"
 	"github.com/spf13/cobra"
 )
+
+var id int
 
 // UpdateTodoCmd represents the UpdateTodo command
 var UpdateTodoCmd = &cobra.Command{
@@ -21,12 +23,23 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("UpdateTodo called")
+		if !isValidIndex(string(id)) {
+			log.Fatal("Not a valid Index")
+		}
+		utils.UpdateTodo(id, utils.TodoParams{
+			Name:        name,
+			Description: description,
+			Due_time:    due_too,
+		})
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(UpdateTodoCmd)
+	AddTodoCmd.Flags().StringVarP(&name, "name", "n", "", "name of you task")
+	AddTodoCmd.Flags().StringVarP(&description, "description", "d", "", "a description off the task")
+	AddTodoCmd.Flags().StringVarP(&due_too, "time", "t", "", "when shoud the task be completed")
+	AddTodoCmd.Flags().IntVarP(&id, "index", "i", 0, "index that shoud be modified")
 
 	// Here you will define your flags and configuration settings.
 
