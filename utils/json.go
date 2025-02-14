@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 )
 
@@ -16,8 +15,6 @@ func parseJsonToTodo() ([]Todo, error) {
 		return []Todo{}, err
 	}
 	filepath := fmt.Sprintf("%s/%s.json", directory, filename)
-	log.Println(filename)
-	log.Println(filepath)
 	tasks := []Todo{}
 	data, err := os.ReadFile(filepath)
 	if err != nil {
@@ -36,8 +33,6 @@ func parseTodoToJson(todos []Todo) error {
 		return err
 	}
 	filepath := fmt.Sprintf("%s/%s.json", directory, filename)
-	log.Println(filepath)
-	log.Println(filename)
 	data, err := json.Marshal(todos)
 	if err != nil {
 		return errors.New("coudn't Marshal json")
@@ -84,7 +79,6 @@ func setConfig(name string) error {
 		Filename: name,
 	}
 	data, err := json.Marshal(config)
-	log.Println(data)
 	if err != nil {
 		return errors.New("marshal Json Config failed")
 	}

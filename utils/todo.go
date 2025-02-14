@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"log"
 )
 
 type Todo struct {
@@ -115,11 +114,9 @@ func NewSave(name string) error {
 	}
 	for _, file := range filenames {
 		if name == file.Name() {
-			log.Println("a")
 			return errors.New("file already exists")
 		}
 	}
-	log.Println("tttt")
 	err = setConfig(name)
 	if err != nil {
 		return err
