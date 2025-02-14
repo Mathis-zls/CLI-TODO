@@ -12,9 +12,9 @@
             "mode": "auto",
             "program": "${file}",
             "args": [
-                "AddTodo",
-                "-n",
-                "test"
+                "DeleteTodo",
+                "-i",
+                "3"
             ],
         }
     ]
