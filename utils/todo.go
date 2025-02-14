@@ -51,7 +51,7 @@ func DeleteTodo(id int) error {
 	}
 	newTodos := []Todo{}
 	for index, todo := range todos {
-		if index+1 != index {
+		if index+1 != id {
 			if todo.Id > id {
 				todo.Id--
 			}
