@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	name        string
-	description string
-	due_too     string
+	nameAdd        string
+	descriptionAdd string
+	due_tooAdd     string
 )
 
 // AddTodoCmd represents the AddTodo command
@@ -28,12 +28,12 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := utils.AddTodo(utils.TodoParams{
-			Name:        name,
-			Description: description,
-			Due_time:    due_too,
+			Name:        nameAdd,
+			Description: descriptionAdd,
+			Due_time:    due_tooAdd,
 		})
 		if err != nil {
-			log.Fatal("A Problem with adding the Todo")
+			log.Fatal("A Problem with adding the Todo", err)
 		}
 	},
 }
@@ -41,9 +41,9 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(AddTodoCmd)
 
-	AddTodoCmd.Flags().StringVarP(&name, "name", "n", "", "name of you task")
-	AddTodoCmd.Flags().StringVarP(&description, "description", "d", "", "a description off the task")
-	AddTodoCmd.Flags().StringVarP(&due_too, "time", "t", "", "when shoud the task be completed")
+	AddTodoCmd.Flags().StringVarP(&nameAdd, "name", "n", "", "name of you task")
+	AddTodoCmd.Flags().StringVarP(&descriptionAdd, "description", "d", "", "a description off the task")
+	AddTodoCmd.Flags().StringVarP(&due_tooAdd, "time", "t", "", "when shoud the task be completed")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

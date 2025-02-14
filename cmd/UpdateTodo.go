@@ -11,7 +11,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var id int
+var (
+	name        string
+	description string
+	due_too     string
+	id          int
+)
 
 // UpdateTodoCmd represents the UpdateTodo command
 var UpdateTodoCmd = &cobra.Command{
