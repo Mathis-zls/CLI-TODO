@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"errors"
+	"log"
 	"strconv"
 
 	"github.com/Mathis-zls/CLI-TODO/utils"
@@ -32,7 +33,10 @@ to quickly create a Cobra application.`,
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		id, _ := strconv.Atoi(args[0])
-		utils.DeleteTodo(id)
+		err := utils.DeleteTodo(id)
+		if err != nil {
+			log.Fatal("Error while deleting Todo:", err)
+		}
 	},
 }
 

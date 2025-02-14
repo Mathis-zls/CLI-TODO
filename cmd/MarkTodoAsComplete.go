@@ -27,7 +27,7 @@ to quickly create a Cobra application.`,
 		}
 		err := utils.MarkTodoAsComplete(id)
 		if err != nil {
-			log.Fatal("Coudn't be marked as Completed")
+			log.Fatal("Coudn't be marked as Completed:", err)
 		}
 	},
 }

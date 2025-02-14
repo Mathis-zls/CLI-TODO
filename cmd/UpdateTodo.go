@@ -28,11 +28,14 @@ to quickly create a Cobra application.`,
 		if !isValidIndex(fmt.Sprintf("%d", id)) {
 			log.Fatal("Not a valid Index")
 		}
-		utils.UpdateTodo(id, utils.TodoParams{
+		err := utils.UpdateTodo(id, utils.TodoParams{
 			Name:        name,
 			Description: description,
 			Due_time:    due_too,
 		})
+		if err != nil {
+			log.Fatal("Error while Updating Todo:", err)
+		}
 	},
 }
 

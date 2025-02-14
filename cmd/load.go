@@ -26,7 +26,10 @@ to quickly create a Cobra application.`,
 		if nameLoad == "" {
 			log.Fatal("The Name of the File that should be loaded is required (-n)")
 		}
-		utils.LoadSave(nameLoad)
+		err := utils.LoadSave(nameLoad)
+		if err != nil {
+			log.Fatal("Error while loading file:", err)
+		}
 	},
 }
 

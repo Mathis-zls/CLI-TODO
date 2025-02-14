@@ -26,7 +26,10 @@ to quickly create a Cobra application.`,
 		if nameSave == "" {
 			log.Fatal("The TodoList needs a name (-n)")
 		}
-		utils.NewSave(nameSave)
+		err := utils.NewSave(nameSave)
+		if err != nil {
+			log.Fatal("Error while creating new TodoList:", err)
+		}
 
 	},
 }
