@@ -42,13 +42,13 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	AddTodoCmd.Flags().StringP("name", "n", "", "Name of your task")
-	AddTodoCmd.Flags().StringP("description", "d", "", "A description of the task")
-	AddTodoCmd.Flags().StringP("time", "t", "", "Deadline for the task")
+	UpdateTodoCmd.Flags().StringP("name", "n", "", "Name of your task")
+	UpdateTodoCmd.Flags().StringP("description", "d", "", "A description of the task")
+	UpdateTodoCmd.Flags().StringP("time", "t", "", "Deadline for the task")
 
-	AddTodoCmd.Flags().IntP("id", "i", 0, "index that shoud be modified")
-	AddTodoCmd.MarkFlagRequired("index")
-	AddTodoCmd.MarkFlagsOneRequired("description", "time")
+	UpdateTodoCmd.Flags().IntP("id", "i", 0, "index that shoud be modified")
+	UpdateTodoCmd.MarkFlagRequired("index")
+	UpdateTodoCmd.MarkFlagsOneRequired("description", "time")
 	rootCmd.AddCommand(UpdateTodoCmd)
 
 	// Here you will define your flags and configuration settings.
