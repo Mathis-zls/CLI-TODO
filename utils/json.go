@@ -63,51 +63,6 @@ func loadDir() ([]os.DirEntry, error) {
 	return filenames, nil
 }
 
-func NewSave(name string) error {
-	filenames, err := loadDir()
-	if err != nil {
-		return err
-	}
-	for _, file := range filenames {
-		if name == file.Name() {
-			return errors.New("file already exists")
-		}
-	}
-	err = setConfig(name)
-	if err != nil {
-		return err
-	}
-
-	err = parseTodoToJson([]Todo{})
-	if err != nil {
-		return errors.New("coudnt create File")
-	}
-	return nil
-}
-
-func LoadSave(name string) error {
-	names, err := getValidFileNames()
-	if err != nil {
-		return err
-	}
-	found := false
-	for _, file := range names {
-		if file == name {
-			err = setConfig(name)
-			if err != nil {
-				return err
-			}
-			found = true
-			break
-		}
-	}
-	if !found {
-		return errors.New("no File with that name saved")
-	}
-	return nil
-
-}
-
 func getValidFileNames() ([]string, error) {
 	filenames, err := loadDir()
 	if err != nil {
@@ -142,7 +97,7 @@ func setConfig(name string) error {
 
 func loadConfig() (filename string, loadError error) {
 	config := Config{}
-	data, err := os.ReadFile(directory + "/config,json")
+	data, err := os.ReadFile(directory + "/config.json")
 	if err != nil {
 		return "", errors.New("failed to read Config file")
 	}

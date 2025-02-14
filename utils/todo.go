@@ -1,5 +1,10 @@
 package utils
 
+import (
+	"errors"
+	"log"
+)
+
 type Todo struct {
 	Done        bool
 	Id          int
@@ -23,8 +28,9 @@ func AddTodo(arg TodoParams) error {
 	if err != nil {
 		return err
 	}
+	newID := len(todos) + 1
 	todo := Todo{
-		Id:          todos[len(todos)-1].Id + 1,
+		Id:          newID,
 		Name:        arg.Name,
 		Description: arg.Description,
 		Due_time:    arg.Due_time,
@@ -101,4 +107,50 @@ func MarkTodoAsComplete(id int) error {
 		return err
 	}
 	return nil
+}
+func NewSave(name string) error {
+	filenames, err := loadDir()
+	if err != nil {
+		return err
+	}
+	for _, file := range filenames {
+		if name == file.Name() {
+			log.Println("a")
+			return errors.New("file already exists")
+		}
+	}
+	log.Println("tttt")
+	err = setConfig(name)
+	if err != nil {
+		return err
+	}
+
+	err = parseTodoToJson([]Todo{})
+	if err != nil {
+		return errors.New("coudnt create File")
+	}
+	return nil
+}
+
+func LoadSave(name string) error {
+	names, err := getValidFileNames()
+	if err != nil {
+		return err
+	}
+	found := false
+	for _, file := range names {
+		if file == name {
+			err = setConfig(name)
+			if err != nil {
+				return err
+			}
+			found = true
+			break
+		}
+	}
+	if !found {
+		return errors.New("no File with that name saved")
+	}
+	return nil
+
 }

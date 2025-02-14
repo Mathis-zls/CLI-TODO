@@ -18,7 +18,6 @@ var NewTodoListCmd = &cobra.Command{
 	Usage: CLI-TODO NewTodoList -n "Homework"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
-		filename = name
 		err := utils.NewSave(name)
 		if err != nil {
 			log.Fatal("Error while creating new TodoList:", err)

@@ -35,15 +35,6 @@ func init() {
 	DeleteTodoCmd.MarkFlagRequired("id")
 	rootCmd.AddCommand(DeleteTodoCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// DeleteTodoCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// DeleteTodoCmd.Flags().Int("index", 0, "Index that shoud be deleted")
 }
 
 func isValidIndex(index int) bool {

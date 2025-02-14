@@ -44,13 +44,13 @@ func todoView(todos []utils.Todo) {
 	}
 	totalCompleted := 0
 	for _, row := range todos {
-		done := '❌'
+		done := "❌"
 		if row.Done {
-			done = '✅'
+			done = "✅"
 			totalCompleted++
 		}
 		r := []*simpletable.Cell{
-			{Align: simpletable.AlignRight, Text: fmt.Sprintf("%v", done)},
+			{Align: simpletable.AlignRight, Text: done},
 			{Align: simpletable.AlignRight, Text: fmt.Sprintf("%v", row.Id)},
 			{Align: simpletable.AlignRight, Text: fmt.Sprintf("%v", row.Name)},
 			{Align: simpletable.AlignRight, Text: fmt.Sprintf("%v", row.Description)},

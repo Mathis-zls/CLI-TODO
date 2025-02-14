@@ -36,17 +36,9 @@ var AddTodoCmd = &cobra.Command{
 }
 
 func init() {
-
-	// Here you will define your flags and configuration settings.
 	AddTodoCmd.Flags().StringP("name", "n", "", "Name of your task")
 	AddTodoCmd.Flags().StringP("description", "d", "", "A description of the task")
 	AddTodoCmd.Flags().StringP("time", "t", "", "Deadline for the task")
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// AddTodoCmd.PersistentFlags().String("foo", "", "A help for foo")
 	AddTodoCmd.MarkFlagRequired("name")
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// AddTodoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.AddCommand(AddTodoCmd)
 }
