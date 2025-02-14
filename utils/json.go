@@ -4,15 +4,20 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 )
 
-var filename = ""
 var directory = "todocli"
 
 func parseJsonToTodo() ([]Todo, error) {
-	filepath := fmt.Sprintf("%s/%s", directory, filename)
-
+	filename, err := loadConfig()
+	if err != nil {
+		return []Todo{}, err
+	}
+	filepath := fmt.Sprintf("%s/%s.json", directory, filename)
+	log.Println(filename)
+	log.Println(filepath)
 	tasks := []Todo{}
 	data, err := os.ReadFile(filepath)
 	if err != nil {
@@ -26,8 +31,13 @@ func parseJsonToTodo() ([]Todo, error) {
 }
 
 func parseTodoToJson(todos []Todo) error {
-	filepath := fmt.Sprintf("%s/%s", directory, filename)
-
+	filename, err := loadConfig()
+	if err != nil {
+		return err
+	}
+	filepath := fmt.Sprintf("%s/%s.json", directory, filename)
+	log.Println(filepath)
+	log.Println(filename)
 	data, err := json.Marshal(todos)
 	if err != nil {
 		return errors.New("coudn't Marshal json")
@@ -63,8 +73,15 @@ func NewSave(name string) error {
 			return errors.New("file already exists")
 		}
 	}
+	err = setConfig(name)
+	if err != nil {
+		return err
+	}
 
-	filename = name
+	err = parseTodoToJson([]Todo{})
+	if err != nil {
+		return errors.New("coudnt create File")
+	}
 	return nil
 }
 
@@ -76,6 +93,10 @@ func LoadSave(name string) error {
 	found := false
 	for _, file := range names {
 		if file == name {
+			err = setConfig(name)
+			if err != nil {
+				return err
+			}
 			found = true
 			break
 		}
@@ -97,4 +118,37 @@ func getValidFileNames() ([]string, error) {
 		validFileNames = append(validFileNames, file.Name())
 	}
 	return validFileNames, nil
+}
+
+type Config struct {
+	Filename string `json:"filname"`
+}
+
+func setConfig(name string) error {
+	config := Config{
+		Filename: name,
+	}
+	data, err := json.Marshal(config)
+	log.Println(data)
+	if err != nil {
+		return errors.New("marshal Json Config failed")
+	}
+	err = os.WriteFile(directory+"/config.json", data, 0644)
+	if err != nil {
+		return errors.New("write Json Config failed")
+	}
+	return nil
+}
+
+func loadConfig() (filename string, loadError error) {
+	config := Config{}
+	data, err := os.ReadFile(directory + "/config,json")
+	if err != nil {
+		return "", errors.New("failed to read Config file")
+	}
+	err = json.Unmarshal(data, &config)
+	if err != nil {
+		return "", errors.New("failed to Unmarshal config file")
+	}
+	return config.Filename, nil
 }
