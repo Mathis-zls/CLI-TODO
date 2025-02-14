@@ -13,13 +13,11 @@ import (
 // AddTodoCmd represents the AddTodo command
 var AddTodoCmd = &cobra.Command{
 	Use:   "AddTodo",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Add a new Todo to your TodoList",
+	Long: `This command is for adding new Todos. 
+	Requierement you already loaded/created a TodoList with load/New.
+	Usage CLI-TODO AdddTodo -n "Einkaufen" -d "Einkaufen bei Rewe" -t "Dienstag"
+	You only need to specify the name -n`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		name, _ := cmd.Flags().GetString("name")

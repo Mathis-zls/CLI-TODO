@@ -4,9 +4,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"errors"
 	"log"
-	"strconv"
 
 	"github.com/Mathis-zls/CLI-TODO/utils"
 	"github.com/spf13/cobra"
@@ -15,24 +13,16 @@ import (
 // DeleteTodoCmd represents the DeleteTodo command
 var DeleteTodoCmd = &cobra.Command{
 	Use:   "DeleteTodo",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Args: func(cmd *cobra.Command, args []string) error {
-		if err := cobra.ExactArgs(1); err != nil {
-			return errors.New("not one Arg")
-		}
-		if isValidIndex(args[0]) {
-			return errors.New("not a Valid ID")
-		}
-		return nil
-	},
+	Short: "Delete an existing Todo by id",
+	Long: `Delete a Todo.You neeed to provide the id of the Todo
+	Only valid ids can be used
+	Usage: CLI-TODO DeleteTodo -i`,
 	Run: func(cmd *cobra.Command, args []string) {
-		id, _ := strconv.Atoi(args[0])
+
+		id, _ := cmd.Flags().GetInt("id")
+		if !isValidIndex(id) {
+			log.Fatal("Error not a valid id:")
+		}
 		err := utils.DeleteTodo(id)
 		if err != nil {
 			log.Fatal("Error while deleting Todo:", err)
@@ -41,6 +31,8 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	DeleteTodoCmd.Flags().IntP("id", "i", 0, "id of the Todo")
+	DeleteTodoCmd.MarkFlagRequired("id")
 	rootCmd.AddCommand(DeleteTodoCmd)
 
 	// Here you will define your flags and configuration settings.
@@ -54,15 +46,9 @@ func init() {
 	// DeleteTodoCmd.Flags().Int("index", 0, "Index that shoud be deleted")
 }
 
-func isValidIndex(index string) bool {
-
-	indx, err := strconv.Atoi(index)
-	if err != nil || indx < 1 {
-		return false
-	}
-	if id, err := utils.GetMaxID(); err != nil || indx > id {
+func isValidIndex(index int) bool {
+	if id, err := utils.GetMaxID(); err != nil || index > id || index < 1 {
 		return false
 	}
 	return true
-
 }

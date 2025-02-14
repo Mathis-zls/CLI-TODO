@@ -4,7 +4,6 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/Mathis-zls/CLI-TODO/utils"
@@ -14,20 +13,19 @@ import (
 // UpdateTodoCmd represents the UpdateTodo command
 var UpdateTodoCmd = &cobra.Command{
 	Use:   "UpdateTodo",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Update a existing Todo",
+	Long: `A command for Updating a Todo. 
+	Requierment a Todo is exisiting with a id
+	You can Update name,description,time
+	Use: CLI-TODO UpdateTodo -i 2 -n "Eat" -d "Go out to eat..." -t "Monday"
+	You can update 1 ore more param (n,d,t) but you need to provide an id`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
 		description, _ := cmd.Flags().GetString("description")
 		dueTime, _ := cmd.Flags().GetString("time")
 		id, _ := cmd.Flags().GetInt("id")
 
-		if !isValidIndex(fmt.Sprintf("%d", id)) {
+		if !isValidIndex(id) {
 			log.Fatal("Not a valid Index")
 		}
 		err := utils.UpdateTodo(id, utils.TodoParams{
@@ -48,16 +46,7 @@ func init() {
 
 	UpdateTodoCmd.Flags().IntP("id", "i", 0, "index that shoud be modified")
 	UpdateTodoCmd.MarkFlagRequired("index")
-	UpdateTodoCmd.MarkFlagsOneRequired("description", "time")
+	UpdateTodoCmd.MarkFlagsOneRequired("description", "time", "name")
 	rootCmd.AddCommand(UpdateTodoCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// UpdateTodoCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// UpdateTodoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

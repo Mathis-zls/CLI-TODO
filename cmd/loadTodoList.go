@@ -10,16 +10,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// loadCmd represents the load command
-var loadCmd = &cobra.Command{
-	Use:   "load",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+// LoadTodoListCmd represents the load command
+var LoadTodoListCmd = &cobra.Command{
+	Use:   "LoadTodoList",
+	Short: "Load a existing todolist by name",
+	Long: `Load an existing todolist while providing the name of the list.
+	It will return an error if the name is wrong
+	Usage: CLI-TODO LoadTodoList -n "Shopping"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
 
@@ -31,9 +28,9 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	loadCmd.Flags().StringP("name", "n", "", "the name of the file that should be loaded")
-	loadCmd.MarkFlagRequired("name")
-	rootCmd.AddCommand(loadCmd)
+	LoadTodoListCmd.Flags().StringP("name", "n", "", "the name of the file that should be loaded")
+	LoadTodoListCmd.MarkFlagRequired("name")
+	rootCmd.AddCommand(LoadTodoListCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

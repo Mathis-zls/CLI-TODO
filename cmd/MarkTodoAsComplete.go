@@ -4,7 +4,6 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/Mathis-zls/CLI-TODO/utils"
@@ -14,16 +13,13 @@ import (
 // MarkTodoAsCompleteCmd represents the MarkTodoAsComplete command
 var MarkTodoAsCompleteCmd = &cobra.Command{
 	Use:   "MarkTodoAsComplete",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Mark a Todo as Completed",
+	Long: `Mark one of your Todos as completed by providig a id of the todo.
+	You can only pass valid id (>0 and existing)
+	Usage: CLI-TODO MarkTodoAsCompleted -i 1`,
 	Run: func(cmd *cobra.Command, args []string) {
 		id, _ := cmd.Flags().GetInt("id")
-		if !isValidIndex(fmt.Sprintf("%d", id)) {
+		if !isValidIndex(id) {
 			log.Fatal("Not a valid index")
 		}
 		err := utils.MarkTodoAsComplete(id)

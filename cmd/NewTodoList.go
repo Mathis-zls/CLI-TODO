@@ -10,16 +10,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// NewCmd represents the New command
-var NewCmd = &cobra.Command{
-	Use:   "New",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+// NewTodoListCmd represents the New command
+var NewTodoListCmd = &cobra.Command{
+	Use:   "NewTodoList",
+	Short: "Creates a new TodoList,with a given name",
+	Long: `Creates a new TodoList. You need to provied a name for the List. This TodoList is saved as a json and can be loaded with LoadTodoList
+	Usage: CLI-TODO NewTodoList -n "Homework"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		name, _ := cmd.Flags().GetString("name")
 		err := utils.NewSave(name)
@@ -31,9 +27,9 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	NewCmd.Flags().StringP("name", "n", "", "Name of your new Todolist")
-	NewCmd.MarkFlagRequired("name")
-	rootCmd.AddCommand(NewCmd)
+	NewTodoListCmd.Flags().StringP("name", "n", "", "Name of your new Todolist")
+	NewTodoListCmd.MarkFlagRequired("name")
+	rootCmd.AddCommand(NewTodoListCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
