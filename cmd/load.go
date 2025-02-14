@@ -10,8 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nameLoad string
-
 // loadCmd represents the load command
 var loadCmd = &cobra.Command{
 	Use:   "load",
@@ -23,10 +21,9 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if nameLoad == "" {
-			log.Fatal("The Name of the File that should be loaded is required (-n)")
-		}
-		err := utils.LoadSave(nameLoad)
+		name, _ := cmd.Flags().GetString("name")
+
+		err := utils.LoadSave(name)
 		if err != nil {
 			log.Fatal("Error while loading file:", err)
 		}
@@ -34,8 +31,9 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	loadCmd.Flags().StringP("name", "n", "", "the name of the file that should be loaded")
+	loadCmd.MarkFlagRequired("name")
 	rootCmd.AddCommand(loadCmd)
-	loadCmd.Flags().StringVarP(&nameLoad, "name", "n", "", "the name of the file that should be loaded")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

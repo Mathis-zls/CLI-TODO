@@ -10,8 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var nameSave string
-
 // NewCmd represents the New command
 var NewCmd = &cobra.Command{
 	Use:   "New",
@@ -23,10 +21,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if nameSave == "" {
-			log.Fatal("The TodoList needs a name (-n)")
-		}
-		err := utils.NewSave(nameSave)
+		name, _ := cmd.Flags().GetString("name")
+		err := utils.NewSave(name)
 		if err != nil {
 			log.Fatal("Error while creating new TodoList:", err)
 		}
@@ -35,8 +31,9 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	NewCmd.Flags().StringP("name", "n", "", "Name of your new Todolist")
+	NewCmd.MarkFlagRequired("name")
 	rootCmd.AddCommand(NewCmd)
-	NewCmd.Flags().StringVarP(&nameSave, "name", "n", "", "Name of your new Todolist")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

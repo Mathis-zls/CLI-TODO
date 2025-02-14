@@ -22,6 +22,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		id, _ := cmd.Flags().GetInt("id")
 		if !isValidIndex(fmt.Sprintf("%d", id)) {
 			log.Fatal("Not a valid index")
 		}
@@ -33,8 +34,9 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	MarkTodoAsCompleteCmd.Flags().IntP("id", "i", 0, "the id from the task that shoud be completed")
+	MarkTodoAsCompleteCmd.MarkFlagRequired("id")
 	rootCmd.AddCommand(MarkTodoAsCompleteCmd)
-	MarkTodoAsCompleteCmd.Flags().IntVarP(&id, "id", "i", 0, "the id from the task that shoud be completed")
 
 	// Here you will define your flags and configuration settings.
 
