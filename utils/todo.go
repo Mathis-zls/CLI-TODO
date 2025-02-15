@@ -2,6 +2,8 @@ package utils
 
 import (
 	"errors"
+	"fmt"
+	"log"
 )
 
 type Todo struct {
@@ -131,12 +133,13 @@ func NewSave(name string) error {
 
 func LoadSave(name string) error {
 	names, err := getValidFileNames()
+	log.Println(names)
 	if err != nil {
 		return err
 	}
 	found := false
 	for _, file := range names {
-		if file == name {
+		if file == fmt.Sprintf("%s.json", name) {
 			err = setConfig(name)
 			if err != nil {
 				return err
