@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"log"
+	"os"
 )
 
 type Todo struct {
@@ -132,25 +132,37 @@ func NewSave(name string) error {
 }
 
 func LoadSave(name string) error {
-	names, err := getValidFileNames()
-	log.Println(names)
+	err := isNameValid(name)
 	if err != nil {
 		return err
 	}
-	found := false
-	for _, file := range names {
-		if file == fmt.Sprintf("%s.json", name) {
-			err = setConfig(name)
-			if err != nil {
-				return err
-			}
-			found = true
-			break
-		}
-	}
-	if !found {
-		return errors.New("no File with that name saved")
+
+	err = setConfig(name)
+	if err != nil {
+		return err
 	}
 	return nil
 
+}
+
+func DeleteSave(name string) error {
+	loadedList, err := loadConfig()
+	if err != nil {
+		return err
+	}
+	if loadedList == name {
+		if err = setConfig(""); err != nil {
+			return err
+		}
+	}
+	err = isNameValid(name)
+	if err != nil {
+		return err
+	}
+	err = os.Remove(fmt.Sprintf("%s/%s.json", directory, name))
+	if err != nil {
+		return errors.New("can't delete File")
+	}
+
+	return nil
 }

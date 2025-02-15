@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -100,4 +101,19 @@ func loadConfig() (filename string, loadError error) {
 		return "", errors.New("failed to Unmarshal config file")
 	}
 	return config.Filename, nil
+}
+
+func isNameValid(name string) error {
+	filenames, err := getValidFileNames()
+	if err != nil {
+		return err
+	}
+
+	for _, file := range filenames {
+		log.Println(file)
+		if file == fmt.Sprintf("%s.json", name) {
+			return nil
+		}
+	}
+	return errors.New("no file with this name found")
 }
