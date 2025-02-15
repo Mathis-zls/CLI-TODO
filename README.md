@@ -30,6 +30,11 @@ Loading a new Todolist:
 ```bash
 ./CLI-TODO LoadTodoList -n "exampleName" 
 ```
+Deleting a Todolist:
+-n/-name is required
+```bash
+./CLI-TODO DeleteTodoList -n "exampleName" 
+```
 Adding a new Todo:
 Only -n/-name is required and an existing Todolist
 ```bash
